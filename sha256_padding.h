@@ -46,8 +46,8 @@ std::vector<uint32_t> sha256_padding(const std::string &in) {
 //        // Write L at the end
     auto end_point = (uint64_t *) &start_point[newlength - 8];
     const uint64_t bitlength = in.length() * sizeof(char) * 8;
-//    end_point[0] = __builtin_bswap64(bitlength); // Save length and change byte ordering
-    end_point[0] = _byteswap_uint64(bitlength); // Save length and change byte ordering
+    end_point[0] = __builtin_bswap64(bitlength); // Save length and change byte ordering
+//    end_point[0] = _byteswap_uint64(bitlength); // Save length and change byte ordering
     return out;
 
 }

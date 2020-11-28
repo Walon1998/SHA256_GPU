@@ -32,11 +32,11 @@ __device__ __inline__ uint32_t sigma1(const uint32_t x) { // 9 ops
     return ROTR<17>(x) ^ ROTR<19>(x) ^ SHR<10>(x);
 }
 
-__device__ __inline__ uint32_t Sigma1(const uint32_t x) { // 10 ops
+__device__ __inline__ uint32_t Sigma1(const uint32_t x) { // 11 ops
     return ROTR<6>(x) ^ ROTR<11>(x) ^ ROTR<25>(x);
 }
 
-__device__ __inline__ uint32_t Sigma0(const uint32_t x) { // 10 ops
+__device__ __inline__ uint32_t Sigma0(const uint32_t x) { // 11 ops
     return ROTR<2>(x) ^ ROTR<13>(x) ^ ROTR<22>(x);
 }
 
