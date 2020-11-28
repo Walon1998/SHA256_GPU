@@ -13,3 +13,4 @@ nvprof --concurrent-kernels off --csv --profile-from-start off --print-gpu-trace
 nvprof --concurrent-kernels off --csv --profile-from-start off --print-gpu-trace --log-file Result/GPU_256_80.csv ./a.out 256 80
 nvprof --concurrent-kernels off --csv --profile-from-start off --print-gpu-trace --log-file Result/GPU_256_160.csv ./a.out 256 160
 nvprof --concurrent-kernels off --csv --profile-from-start off --print-gpu-trace --log-file Result/GPU_256_240.csv ./a.out 256 240
+nvprof --concurrent-kernels off --csv --profile-from-start off --print-gpu-trace --log-file Result/GPU_256_1024.csv ./a.out 256 1024
