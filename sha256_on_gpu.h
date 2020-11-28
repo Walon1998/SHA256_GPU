@@ -96,7 +96,7 @@ void sha256_on_gpu_test() {
 void sha256_on_gpu_bench(const int threads = 1, const int blocks = 1) {
 
     for (int i = 0; i < 9; i++) {
-        std::cout << std::pow(10, i) << std::endl;
+        std::cout << std::pow(10, i) << "<" << threads << ", " << blocks << ">" << std::endl;
         sha256_on_gpu(std::string(std::pow(10, i), 'a'), true, threads, blocks);
     }
 
