@@ -21,25 +21,28 @@ __global__ void sha256_kernel_gpu(const uint32_t *__restrict__ in, const uint32_
              0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
              0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
 
-    // Initial Hash values
-    uint32_t H0 = 0x6a09e667;
-    uint32_t H1 = 0xbb67ae85;
-    uint32_t H2 = 0x3c6ef372;
-    uint32_t H3 = 0xa54ff53a;
-    uint32_t H4 = 0x510e527f;
-    uint32_t H5 = 0x9b05688c;
-    uint32_t H6 = 0x1f83d9ab;
-    uint32_t H7 = 0x5be0cd19;
+    register uint32_t H[8];
 
-    register int W[64];
+    // Initial Hash values
+    H[0] = 0x6a09e667;
+    H[1] = 0xbb67ae85;
+    H[2] = 0x3c6ef372;
+    H[3] = 0xa54ff53a;
+    H[4] = 0x510e527f;
+    H[5] = 0x9b05688c;
+    H[6] = 0x1f83d9ab;
+    H[7] = 0x5be0cd19;
+
+    register uint32_t W[64];
 
     for (int i = 0; i < N; i += 16) { // 1056+2240+8 = 3304 ops per block
 
         // File Message Schedule
 #pragma unroll
         for (int j = 0; j < 16; j++) {
-            W[j] = in[i + j];
+            reinterpret_cast<int4 *>(W)[j] = reinterpret_cast< const int4 *>(in)[j];
         }
+        in += 16;
 
         // Only 16 values of the message schedule are used at the same time
         // it would be possible to integrate this loop in the next one to save registers.
@@ -55,14 +58,14 @@ __global__ void sha256_kernel_gpu(const uint32_t *__restrict__ in, const uint32_
         }
 
         // Initial Hash values
-        uint32_t a = H0;
-        uint32_t b = H1;
-        uint32_t c = H2;
-        uint32_t d = H3;
-        uint32_t e = H4;
-        uint32_t f = H5;
-        uint32_t g = H6;
-        uint32_t h = H7;
+        uint32_t a = H[0];
+        uint32_t b = H[1];
+        uint32_t c = H[2];
+        uint32_t d = H[3];
+        uint32_t e = H[4];
+        uint32_t f = H[5];
+        uint32_t g = H[6];
+        uint32_t h = H[7];
 
 #pragma unroll
         for (int j = 0; j < 64; j++) { // 64 * (17+16+2) = 2240
@@ -80,27 +83,22 @@ __global__ void sha256_kernel_gpu(const uint32_t *__restrict__ in, const uint32_
         }
 
         // 8 ops
-        H0 += a;
-        H1 += b;
-        H2 += c;
-        H3 += d;
-        H4 += e;
-        H5 += f;
-        H6 += g;
-        H7 += h;
+        H[0] += a;
+        H[1] += b;
+        H[2] += c;
+        H[3] += d;
+        H[4] += e;
+        H[5] += f;
+        H[6] += g;
+        H[7] += h;
 
 
     }
 
     if (threadIdx.x == 0 && blockIdx.x == 0) {
-        out[0] = H0;
-        out[1] = H1;
-        out[2] = H2;
-        out[3] = H3;
-        out[4] = H4;
-        out[5] = H5;
-        out[6] = H6;
-        out[7] = H7;
+        reinterpret_cast<int4 *>(out)[0] = reinterpret_cast< const int4 *>(H)[0];
+        reinterpret_cast<int4 *>(out)[1] = reinterpret_cast< const int4 *>(H)[1];
+
     }
 }
 
