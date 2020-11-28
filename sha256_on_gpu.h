@@ -90,14 +90,12 @@ void sha256_on_gpu_test() {
 
     out = sha256_on_gpu("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
     assert(out == "cd372fb85148700fa88095e3492d3f9f5beb43e555e5ff26d95f5a6adc36f8e6");
-
-    std::cout << "correct";
 }
 
 void sha256_on_gpu_bench(const int threads = 1, const int blocks = 1) {
 
 //    for (int i = 0; i < 9; i++) {
-        std::cout << std::pow(10, 6) << ": <" << threads << ", " << blocks << ">" << std::endl;
+    std::cout << std::pow(10, 6) << ": <" << threads << ", " << blocks << ">" << std::endl;
     sha256_on_gpu(std::string(std::pow(10, 6), 'a'), true, threads, blocks);
 //    }
 
