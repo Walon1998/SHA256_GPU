@@ -33,7 +33,7 @@ __global__ void sha256_kernel_gpu(const uint32_t *__restrict__ in, const uint32_
 
     register int W[64];
 
-    for (int i = 0; i < N; i += 16) {
+    for (int i = 0; i < N; i += 16) { // 1056+2240+8 = 3304 ops per block
 
         // File Message Schedule
 #pragma unroll
@@ -47,7 +47,7 @@ __global__ void sha256_kernel_gpu(const uint32_t *__restrict__ in, const uint32_
         // If our does uses a lot of registers (> 80), we have to do this on our own.
         // Otherwise this kernel should use only about 30 registers
 #pragma unroll
-        for (int j = 16; j < 64; j++) {
+        for (int j = 16; j < 64; j++) { // 48 * (9 + 10 + 3 ) = 1056
             W[j] = sigma1(W[j - 2])
                    + W[j - 7]
                    + sigma0(W[j - 15])
@@ -65,10 +65,10 @@ __global__ void sha256_kernel_gpu(const uint32_t *__restrict__ in, const uint32_
         uint32_t h = H7;
 
 #pragma unroll
-        for (int j = 0; j < 64; j++) {
+        for (int j = 0; j < 64; j++) { // 64 * (17+16+2) = 2240
 
-            const int T1 = h + Sigma1(e) + ch(e, f, g) + K[j] + W[j];
-            const int T2 = Sigma0(a) + maj(a, b, c);
+            const int T1 = h + Sigma1(e) + ch(e, f, g) + K[j] + W[j]; // 1 + 10 + 4 + 1 + 1 = 17 ops
+            const int T2 = Sigma0(a) + maj(a, b, c); // 10 + 5 + 1 = 16 ops
             h = g;
             g = f;
             f = e;
@@ -79,6 +79,7 @@ __global__ void sha256_kernel_gpu(const uint32_t *__restrict__ in, const uint32_
             a = T1 + T2;
         }
 
+        // 8 ops
         H0 += a;
         H1 += b;
         H2 += c;
