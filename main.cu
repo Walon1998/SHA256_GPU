@@ -3,9 +3,13 @@
 
 
 int main(int argc, char *argv[]) {
-    int threads = atoi(argv[1]);
-    int blocks = atoi(argv[2]);
+
     sha256_on_gpu_test();
-    sha256_on_gpu_bench(threads, blocks);
+    if (argc == 3) {
+        int threads = atoi(argv[1]);
+        int blocks = atoi(argv[2]);
+        sha256_on_gpu_bench(threads, blocks);
+    }
+
     return 0;
 }
