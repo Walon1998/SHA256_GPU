@@ -4,7 +4,7 @@ module load cuda
 module load gcc
 export CUDA_AUTO_BOOST=0
 nvcc main.cu -O3 -std=c++11 -gencode arch=compute_70,code=sm_70
-sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=1_out.tx ./run_single.sh 1 1
+sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=1_out.txt ./run_single.sh 1 1
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=2_out.txt  ./run_single.sh 64 80
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=3_out.txt ./run_single.sh 64 160
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=4_out.txt ./run_single.sh 64 240
