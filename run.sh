@@ -22,7 +22,7 @@ sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=16_out.txt ./run_single.sh 512 160
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=17_out.txt ./run_single.sh 512 240
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=18_out.txt ./run_single.sh 512 320
-sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=18_out.txt ./run_single.sh 1024 80
+sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=19_out.txt ./run_single.sh 1024 80
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=20_out.txt ./run_single.sh 1024 160
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=21_out.txt ./run_single.sh 1024 240
 sbatch --partition=intelv100 --exclude=ault24 --time=04:00:00 --gres=gpu:1 -n1  --cpus-per-task=8  --mem-per-cpu=4096 --output=22_out.txt ./run_single.sh 1024 320
