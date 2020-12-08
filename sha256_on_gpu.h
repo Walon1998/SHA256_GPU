@@ -13,7 +13,7 @@
 #include <cmath>
 #include "cuda_profiler_api.h"
 
-std::string sha256_on_gpu(const std::string in, const bool benchmark = false, const int threads = 1, const int blocks = 1) {
+std::string sha256_on_gpu(const std::string in, const bool benchmark = false, const int threads_per_block = 1, const int blocks = 1) {
 
     // 1. Padding
     std::vector<uint32_t> padded = sha256_padding(in);
@@ -41,11 +41,11 @@ std::string sha256_on_gpu(const std::string in, const bool benchmark = false, co
     if (benchmark) {
 
         for (int i = 0; i < 10; i++) {
-            sha256_kernel_gpu<<<threads, blocks>>>(dev_In, padded.size(), dev_Out);
+            sha256_kernel_gpu<<<blocks,threads_per_block>>>(dev_In, padded.size(), dev_Out);
         }
         cudaProfilerStart();
         for (int i = 0; i < 100; i++) {
-            sha256_kernel_gpu<<<threads, blocks>>>(dev_In, padded.size(), dev_Out);
+            sha256_kernel_gpu<<<blocks,threads_per_block>>>(dev_In, padded.size(), dev_Out);
         }
         cudaProfilerStop();
 
@@ -92,11 +92,11 @@ void sha256_on_gpu_test() {
     assert(out == "cd372fb85148700fa88095e3492d3f9f5beb43e555e5ff26d95f5a6adc36f8e6");
 }
 
-void sha256_on_gpu_bench(const int threads = 1, const int blocks = 1) {
+void sha256_on_gpu_bench(const int threads_per_block = 1, const int blocks = 1) {
 
     for (int i = 0; i < 9; i++) {
-        std::cout << std::pow(10, i) << ": <" << threads << ", " << blocks << ">" << std::endl;
-        sha256_on_gpu(std::string(std::pow(10, i), 'a'), true, threads, blocks);
+        std::cout << std::pow(10, i) << ": <" << threads_per_block << ", " << blocks << ">" << std::endl;
+        sha256_on_gpu(std::string(std::pow(10, i), 'a'), true, threads_per_block, blocks);
     }
 
 }
